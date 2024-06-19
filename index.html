@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Modeling</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .jumbotron {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .btn-primary {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        .btn-primary:hover {
+            background-color: #ffca28;
+            border-color: #ffca28;
+        }
+        .file-upload-wrapper {
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 20px;
+            transition: border-color 0.3s ease-in-out;
+        }
+        .file-upload-wrapper:hover {
+            border-color: #ff7b00;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .file-upload-wrapper .btn {
+            animation: pulse 1.5s infinite;
+        }
+        /* Additional Custom Styles */
+        .container {
+            max-width: 800px;
+        }
+        .display-4 {
+            font-size: 24px;
+            line-height: 1.5;
+        }
+        .file-upload-wrapper {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .mt-3 {
+            background-color: #399702;
+            color: #ffffff;
+            margin-top: 30px;
+        }
+        .pre-scrollable {
+            max-height: 300px;
+            overflow-y: scroll;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron mt-5">
+            <h1 class="display-4">Language Modeling</h1>
+            <p class="lead">Here we can upload files and train a language model from the textual content of the uploaded files.</p>
+            <p class="lead">Supported file formats: '.pdf', '.doc', '.docx', '.txt', '.odt', '.rtf'</p>
+            <div class="file-upload-wrapper mt-4">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="file" id="fileInput" class="form-control-file">
+                    <button class="btn btn-primary mt-3">Upload</button>
+            </div>
+        </div>
+        <div class="mt-3">
+            <h2>Randomly generated unigram and bigram text</h2>
+            <div class="pre-scrollable" id="output"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var fileInput = document.getElementById('fileInput');
+        var file = fileInput.files[0];
+        var formData = new FormData();
+
+        formData.append('file', file);
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+        });
+    </script>
+</body>
+</html>
